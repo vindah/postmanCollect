@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "7ffb1fd5-c38b-4c32-9909-6222cd278afd",
+		"name": "Sabi.am",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"user_token\", jsonData.token);",
+							"pm.collectionVariables.set(\"user_refreshToken\", jsonData.refreshToken);",
+							"",
+							"",
+							"pm.test(\"Verify status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify token is returned successfully\", function () {",
+							"    pm.expect(jsonData).to.have.property('token')",
+							"});",
+							"",
+							"pm.test(\"Verify that the refresh token is returned\",() =>{",
+							"    pm.expect(jsonData).to.have.property('refreshToken')",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Fingerprint",
+						"value": "e0224b3d-74f5-49c5-930f-61d7079c7b3b",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"password\": \"{{password}}\",\n    \"username\": \"{{username}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-staging.spaceso2o.com/api/token/generate-token",
+					"protocol": "https",
+					"host": [
+						"api-staging",
+						"spaceso2o",
+						"com"
+					],
+					"path": [
+						"api",
+						"token",
+						"generate-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"userName = pm.collectionVariables.get(\"username\");",
+							"first_name = pm.collectionVariables.get(\"firstname\");",
+							"last_name = pm.collectionVariables.get(\"lastname\");",
+							"",
+							"pm.test(\"Verify status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify msisdn is returned\", function () {",
+							"    pm.expect(jsonData).to.have.property('msisdn')",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"Verify that referral code is same as username\", ()=>{",
+							"    pm.expect(jsonData.agentCodeToShare).to.equal(userName)",
+							"})",
+							"",
+							"pm.test(\"Verify that agents active state is TRUE\",() =>{",
+							"    pm.expect(jsonData).to.have.property('active')",
+							"    pm.expect(jsonData.active).to.equal(true)",
+							"});",
+							"",
+							"pm.test(\"Verify that first and lastname is present\",()=>{",
+							"    pm.expect(jsonData).to.have.property('firstName')",
+							"    pm.expect(jsonData).to.have.property('lastName')",
+							"    pm.expect(jsonData.firstName).to.equal(first_name)",
+							"    pm.expect(jsonData.lastName).to.equal(last_name)",
+							"})",
+							"",
+							"pm.test(\"Verify the verification status for user\",()=>{",
+							"    pm.expect(jsonData).to.have.property('credentialsNonExpired')",
+							"    pm.expect(jsonData).to.have.property('bvnVerified')",
+							"    pm.expect(jsonData.credentialsNonExpired).to.equal(true)",
+							"    pm.expect(jsonData.bvnVerified).to.equal(false)",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "refresh-token",
+						"value": "{{user_refreshToken}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Fingerprint",
+						"value": "e0224b3d-74f5-49c5-930f-61d7079c7b3b",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api-staging.spaceso2o.com/api/users/userData",
+					"protocol": "https",
+					"host": [
+						"api-staging",
+						"spaceso2o",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"userData"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": "08037097313",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "123456",
+			"type": "string"
+		},
+		{
+			"key": "user_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_refreshToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstname",
+			"value": "Pat",
+			"type": "string"
+		},
+		{
+			"key": "lastname",
+			"value": "Vindah",
+			"type": "string"
+		}
+	]
+}
