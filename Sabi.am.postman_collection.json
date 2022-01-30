@@ -54,12 +54,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://api-staging.spaceso2o.com/api/token/generate-token",
-					"protocol": "https",
+					"raw": "{{baseUrl}}/api/token/generate-token",
 					"host": [
-						"api-staging",
-						"spaceso2o",
-						"com"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"api",
@@ -151,12 +148,9 @@
 					}
 				],
 				"url": {
-					"raw": "https://api-staging.spaceso2o.com/api/users/userData",
-					"protocol": "https",
+					"raw": "{{baseUrl}}/api/users/userData",
 					"host": [
-						"api-staging",
-						"spaceso2o",
-						"com"
+						"{{baseUrl}}"
 					],
 					"path": [
 						"api",
@@ -217,6 +211,11 @@
 		{
 			"key": "lastname",
 			"value": "Vindah",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://api-staging.spaceso2o.com",
 			"type": "string"
 		}
 	]
